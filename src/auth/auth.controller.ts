@@ -17,8 +17,6 @@ export class AuthController {
 
   @Post('register')
   registerUser(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto);
-
-    this.userService.createUser();
+    this.userService.createUser(createUserDto);
   }
 }

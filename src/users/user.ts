@@ -1,3 +1,4 @@
+import { UserDetails } from './../utils/types';
 export interface IUserService {
-  createUser();
+  createUser(userDetail: UserDetails);
 }
