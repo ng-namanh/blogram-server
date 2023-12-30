@@ -1,8 +1,9 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { IAuthService } from './auth';
 import { ValidateUserDetails } from 'src/utils/types';
 import { Services } from 'src/utils/constants';
 import { UsersService } from 'src/users/users.service';
+import { compareHash } from 'src/utils/helper';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -12,11 +13,17 @@ export class AuthService implements IAuthService {
 
   async validateUser(userDetails: ValidateUserDetails) {
     const user = await this.userService.findUser({ email: userDetails.email });
-    if (userDetails.password !== user.password) {
-      throw new UnauthorizedException('Wrong credentials');
-    }
-    console.log(user);
 
-    return true ? user : false;
+    if (!user) {
+      throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    const isPasswordValid = await compareHash(
+      userDetails.password,
+      user.password,
+    );
+    console.log(isPasswordValid);
+
+    return user;
   }
 }
