@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IUserService } from './user';
-import { UserDetails } from 'src/utils/types';
+import { FindUserParams, UserDetails } from 'src/utils/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/database/typeorm/entities/User';
 import { Repository } from 'typeorm';
@@ -11,7 +11,27 @@ export class UsersService implements IUserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  createUser(userDetails: UserDetails) {
+  async createUser(userDetails: UserDetails) {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: userDetails.email },
+    });
+    if (existingUser) {
+      throw new HttpException(
+        'User with this email already exists!',
+        HttpStatus.CONFLICT,
+      );
+    }
+    console.log(existingUser);
     return this.userRepository.save(userDetails);
+  }
+
+  async getUsers() {
+    return await this.userRepository.find();
+  }
+
+  async findUser(findUserParams: FindUserParams) {
+    return this.userRepository.findOne({
+      where: { email: findUserParams.email },
+    });
   }
 }

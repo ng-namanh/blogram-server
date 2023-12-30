@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { Services } from 'src/utils/constants';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/database/typeorm/entities/User';
+import { UsersController } from './users.controller';
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
   providers: [
@@ -17,5 +18,6 @@ import { User } from 'src/database/typeorm/entities/User';
       useClass: UsersService,
     },
   ],
+  controllers: [UsersController],
 })
 export class UsersModule {}
