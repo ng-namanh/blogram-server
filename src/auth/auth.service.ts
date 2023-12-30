@@ -1,14 +1,16 @@
 import { Inject, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { IAuthService } from './auth';
-import { ValidateUserDetails } from 'src/utils/types';
+import { ValidateUserDetails, JwtPayload } from 'src/utils/types';
 import { Services } from 'src/utils/constants';
 import { UsersService } from 'src/users/users.service';
 import { compareHash } from 'src/utils/helper';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
     @Inject(Services.USER) private readonly userService: UsersService,
+    private jwtService: JwtService,
   ) {}
 
   async validateUser(userDetails: ValidateUserDetails) {
@@ -25,5 +27,14 @@ export class AuthService implements IAuthService {
     console.log(isPasswordValid);
 
     return user;
+  }
+
+  // Implement login to sign jwt key here to retrun jwt token
+  login(user: ValidateUserDetails) {
+    const payload: JwtPayload = { email: user.email, sub: user.id };
+
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
   }
 }

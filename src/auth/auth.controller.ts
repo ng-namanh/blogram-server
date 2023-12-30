@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/CreateUser.dto';
 import { IUserService } from 'src/users/user';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { ValidateUserDetails } from 'src/utils/types';
 
 @Controller(Routes.AUTH)
 export class AuthController {
@@ -21,6 +22,6 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Req() req: Request) {
-    return req.user;
+    return this.authService.login(req.user as ValidateUserDetails);
   }
 }

@@ -12,6 +12,12 @@ export type FindUserParams = Partial<{
 }>;
 
 export type ValidateUserDetails = {
+  id?: number;
   email: string;
   password: string;
+};
+
+export type JwtPayload = {
+  sub: number;
+  email: string;
 };
