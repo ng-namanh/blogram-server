@@ -4,6 +4,7 @@ import { FindUserParams, UserDetails } from 'src/utils/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/database/typeorm/entities/User';
 import { Repository } from 'typeorm';
+import { hashPassword } from 'src/utils/helper';
 
 @Injectable()
 export class UsersService implements IUserService {
@@ -18,11 +19,15 @@ export class UsersService implements IUserService {
     if (existingUser) {
       throw new HttpException(
         'User with this email already exists!',
-        HttpStatus.CONFLICT,
+        HttpStatus.BAD_REQUEST,
       );
     }
-    console.log(existingUser);
-    return this.userRepository.save(userDetails);
+
+    const password = await hashPassword(userDetails.password);
+
+    const params = { ...userDetails, password };
+    const newUser = this.userRepository.create(params);
+    return this.userRepository.save(newUser);
   }
 
   async getUsers() {

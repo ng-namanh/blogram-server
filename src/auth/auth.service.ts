@@ -17,6 +17,6 @@ export class AuthService implements IAuthService {
     }
     console.log(user);
 
-    return user;
+    return true ? user : false;
   }
 }
