@@ -24,7 +24,8 @@ export class AuthService implements IAuthService {
       userDetails.password,
       user.password,
     );
-    console.log(isPasswordValid);
+
+    // if password is not valid
     if (!isPasswordValid) {
       throw new HttpException(
         'Wrong username or password',
@@ -36,6 +37,16 @@ export class AuthService implements IAuthService {
 
   // Implement login to sign jwt key here to retrun jwt token
   login(user: ValidateUserDetails) {
+    const payload: JwtPayload = { email: user.email, sub: user.id };
+
+    return {
+      ...user,
+      accessToken: this.jwtService.sign(payload),
+      refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
+    };
+  }
+
+  refreshToken(user: ValidateUserDetails) {
     const payload: JwtPayload = { email: user.email, sub: user.id };
 
     return {

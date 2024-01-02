@@ -5,4 +5,5 @@ import { LoginDto } from './dto/Login.dto';
 export interface IAuthService {
   validateUser(loginDto: LoginDto);
   login(user: ValidateUserDetails);
+  refreshToken(user: ValidateUserDetails);
 }

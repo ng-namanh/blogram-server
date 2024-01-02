@@ -4,10 +4,14 @@ import { AuthService } from './auth.service';
 import { Services } from 'src/utils/constants';
 import { UsersModule } from 'src/users/users.module';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './utils/strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtStrategy } from './utils/strategy';
+import {
+  JwtStrategy,
+  RefreshJwtStrategy,
+  LocalStrategy,
+} from './utils/strategy.auth';
+
 @Module({
   imports: [
     UsersModule,
@@ -23,12 +27,13 @@ import { JwtStrategy } from './utils/strategy';
   ],
   controllers: [AuthController],
   providers: [
+    LocalStrategy,
     JwtStrategy,
+    RefreshJwtStrategy,
     {
       provide: Services.AUTH,
       useClass: AuthService,
     },
-    LocalStrategy,
   ],
 })
 export class AuthModule {}

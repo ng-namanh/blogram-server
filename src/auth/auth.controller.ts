@@ -4,8 +4,8 @@ import { IAuthService } from './auth';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { IUserService } from 'src/users/user';
 import { Request } from 'express';
-import { AuthGuard } from '@nestjs/passport';
 import { ValidateUserDetails } from 'src/utils/types';
+import { LocalAuthGuard, RefreshJwtAuthGuard } from './utils/guard.auth';
 
 @Controller(Routes.AUTH)
 export class AuthController {
@@ -19,9 +19,15 @@ export class AuthController {
     this.userService.createUser(createUserDto);
   }
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req: Request) {
     return this.authService.login(req.user as ValidateUserDetails);
+  }
+
+  @UseGuards(RefreshJwtAuthGuard)
+  @Post('refresh-token')
+  async refreshToken(@Req() req: Request) {
+    return this.authService.refreshToken(req.user as ValidateUserDetails);
   }
 }
