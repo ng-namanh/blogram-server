@@ -25,7 +25,12 @@ export class AuthService implements IAuthService {
       user.password,
     );
     console.log(isPasswordValid);
-
+    if (!isPasswordValid) {
+      throw new HttpException(
+        'Wrong username or password',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
     return user;
   }
 
