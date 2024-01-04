@@ -21,3 +21,8 @@ export type JwtPayload = {
   sub: number;
   email: string;
 };
+
+export type ReturnMessage = {
+  success: boolean;
+  message: string;
+};

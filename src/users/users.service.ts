@@ -17,11 +17,9 @@ export class UsersService implements IUserService {
       where: { email: userDetails.email },
     });
     if (existingUser) {
-      console.log(
-        new HttpException(
-          'User with this email already exists!',
-          HttpStatus.BAD_REQUEST,
-        ),
+      throw new HttpException(
+        'User with this email already exists!',
+        HttpStatus.CONFLICT,
       );
     }
 
