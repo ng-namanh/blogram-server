@@ -1,9 +1,9 @@
 import { ValidateUserDetails } from 'src/utils/types';
 import { LoginDto } from './dto/Login.dto';
-// import { User } from 'src/database/typeorm/entities/User';
+import { User } from 'src/database/typeorm/entities/User';
 
 export interface IAuthService {
-  validateUser(loginDto: LoginDto);
-  login(user: ValidateUserDetails);
-  refreshToken(user: ValidateUserDetails);
+  validateUser(loginDto: LoginDto): Promise<User>;
+  login(user: ValidateUserDetails): void;
+  refreshToken(user: ValidateUserDetails): void;
 }
