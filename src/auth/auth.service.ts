@@ -42,10 +42,6 @@ export class AuthService implements IAuthService {
     return {
       user: { id: user.id, email: user.email },
       accessToken: { token: this.jwtService.sign(payload), expireIn: '60s' },
-      refreshToken: {
-        token: this.jwtService.sign(payload, { expiresIn: '7d' }),
-        expireIn: '60s',
-      },
     };
   }
 
