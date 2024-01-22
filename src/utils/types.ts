@@ -5,6 +5,11 @@ export type UserDetails = {
   password: string;
 };
 
+export type PostDetails = {
+  title: string;
+  content: string;
+};
+
 export type FindUserParams = Partial<{
   id: number;
   email: string;

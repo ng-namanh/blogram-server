@@ -27,7 +27,7 @@ export class UsersService implements IUserService {
 
     const params = { ...userDetails, password };
     const newUser = this.userRepository.create(params);
-    return this.userRepository.save(newUser);
+    return await this.userRepository.save(newUser);
   }
 
   async getUsers() {
