@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService implements IAuthService {
   constructor(
     @Inject(Services.USER) private readonly userService: UsersService,
-    private jwtService: JwtService,
+    private jwt: JwtService,
   ) {}
 
   async validateUser(userDetails: ValidateUserDetails) {
@@ -35,13 +35,13 @@ export class AuthService implements IAuthService {
     return user;
   }
 
-  // Implement login to sign jwt key here to retrun jwt token
-  login(user: ValidateUserDetails) {
+  // Implement login to sign jwt key here to return jwt token
+
+  generateAccesstoken(user: ValidateUserDetails) {
     const payload: JwtPayload = { email: user.email, sub: user.id };
 
     return {
-      user: { id: user.id, email: user.email },
-      accessToken: { token: this.jwtService.sign(payload), expireIn: '60s' },
+      accessToken: this.jwt.sign(payload),
     };
   }
 
@@ -49,7 +49,7 @@ export class AuthService implements IAuthService {
     const payload: JwtPayload = { email: user.email, sub: user.id };
 
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwt.sign(payload),
     };
   }
 }

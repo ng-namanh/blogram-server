@@ -30,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(jwtStrategy) {
   }
 
   async validate(payload: JwtPayload) {
-    return { userId: payload.sub, email: payload.email };
+    return { id: payload.sub, email: payload.email };
   }
 }
 
@@ -48,6 +48,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
   }
 
   async validate(payload: JwtPayload) {
-    return { userId: payload.sub, email: payload.email };
+    console.log('Extracted token:', ExtractJwt.fromBodyField('refresh'));
+    return { id: payload.sub, email: payload.email };
   }
 }
