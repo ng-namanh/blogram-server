@@ -27,6 +27,11 @@ export type JwtPayload = {
   email: string;
 };
 
+export type AccessToken = {
+  accessToken: string;
+  expireIn?: string;
+};
+
 export type ReturnMessage = {
   success: boolean;
   message: string;
