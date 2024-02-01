@@ -1,13 +1,20 @@
 export type UserDetails = {
-  name: string;
-  username: string;
+  id?: number;
+  name?: string;
+  username?: string;
   email: string;
-  password: string;
+  password?: string;
 };
 
 export type PostDetails = {
   title: string;
   content: string;
+};
+
+export type CreatePostParams = {
+  title: string;
+  content: string;
+  authorId: number;
 };
 
 export type FindUserParams = Partial<{
