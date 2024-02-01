@@ -4,4 +4,5 @@ export interface IUserService {
   getUsers(): Promise<User[]>;
   createUser(userDetail: UserDetails): Promise<User>;
   findUser(findUserParams: FindUserParams): Promise<User>;
+  getUserPosts(userId: number): Promise<any>;
 }
