@@ -36,7 +36,6 @@ export type JwtPayload = {
 
 export type AccessToken = {
   accessToken: string;
-  expireIn?: string;
 };
 
 export type ReturnMessage = {

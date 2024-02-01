@@ -45,11 +45,7 @@ export class AuthController {
 
     return res.status(HttpStatus.OK).json({
       user: { id: user.id, email: user.email },
-      accessToken: {
-        token: this.authService.generateAccesstoken(user),
-        expireIn: '60s',
-        hello: 'hehe',
-      },
+      accessToken: this.authService.generateAccesstoken(user),
     });
   }
 

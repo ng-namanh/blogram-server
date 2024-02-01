@@ -40,16 +40,12 @@ export class AuthService implements IAuthService {
   generateAccesstoken(user: ValidateUserDetails) {
     const payload: JwtPayload = { email: user.email, sub: user.id };
 
-    return {
-      accessToken: this.jwt.sign(payload),
-    };
+    return this.jwt.sign(payload);
   }
 
   refreshToken(user: ValidateUserDetails) {
     const payload: JwtPayload = { email: user.email, sub: user.id };
 
-    return {
-      accessToken: this.jwt.sign(payload),
-    };
+    return this.jwt.sign(payload);
   }
 }
