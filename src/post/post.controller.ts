@@ -23,9 +23,10 @@ export class PostController {
       authorId: req.user.id,
     };
 
-    this.postService.createPost(params);
+    const newPost = this.postService.createPost(params);
 
     return {
+      post: newPost,
       user: req.user,
       success: true,
       message: 'Post successfully published',
