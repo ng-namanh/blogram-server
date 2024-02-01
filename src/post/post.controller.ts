@@ -1,4 +1,12 @@
-import { Body, Controller, Inject, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { Services, Routes } from 'src/utils/constants';
 import { IPostService } from './post';
 import { CreatePostDto } from './dto/post.dto';
@@ -23,13 +31,21 @@ export class PostController {
       authorId: req.user.id,
     };
 
-    const newPost = this.postService.createPost(params);
+    this.postService.createPost(params);
 
     return {
-      post: newPost,
-      user: req.user,
+      post: {
+        title: postDto.title,
+        content: postDto.content,
+      },
+      author: req.user,
       success: true,
       message: 'Post successfully published',
     } as ReturnMessage;
+  }
+
+  @Get()
+  async getPosts() {
+    return await this.postService.getPosts();
   }
 }

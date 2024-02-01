@@ -32,4 +32,10 @@ export class PostService implements IPostService {
 
     return await this.postRepository.save(newPost);
   }
+
+  async getPosts() {
+    return await this.postRepository.find({
+      relations: ['author'],
+    });
+  }
 }
