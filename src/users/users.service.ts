@@ -23,21 +23,26 @@ export class UsersService implements IUserService {
    * @throws HttpException with status code 409 if a user with the same email already exists.
    */
   async createUser(userDetails: UserDetails) {
-    const existingUser = await this.userRepository.findOne({
-      where: { email: userDetails.email },
-    });
-    if (existingUser) {
-      throw new HttpException(
-        'User with this email already exists!',
-        HttpStatus.CONFLICT,
-      );
+    try {
+      const existingUser = await this.userRepository.findOne({
+        where: { email: userDetails.email },
+      });
+      if (existingUser) {
+        throw new HttpException(
+          'User with this email already exists!',
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      const password = await hashPassword(userDetails.password);
+
+      const params = { ...userDetails, password };
+      const newUser = this.userRepository.create(params);
+      return await this.userRepository.save(newUser);
+    } catch (error) {
+      // Handle the error here
+      console.error(error);
     }
-
-    const password = await hashPassword(userDetails.password);
-
-    const params = { ...userDetails, password };
-    const newUser = this.userRepository.create(params);
-    return await this.userRepository.save(newUser);
   }
 
   /**
