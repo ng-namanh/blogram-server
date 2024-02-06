@@ -15,7 +15,6 @@ import { IUserService } from 'src/users/user';
 import { Request, Response } from 'express';
 import { ValidateUserDetails } from 'src/utils/types';
 import { LocalAuthGuard, RefreshJwtAuthGuard } from './utils/guard.auth';
-import { ReturnMessage } from 'src/utils/types';
 
 @Controller(Routes.AUTH)
 export class AuthController {
@@ -26,11 +25,7 @@ export class AuthController {
 
   @Post('register')
   register(@Body() createUserDto: CreateUserDto) {
-    this.userService.createUser(createUserDto);
-    return {
-      success: true,
-      message: 'User registration successful.',
-    } as ReturnMessage;
+    return this.userService.createUser(createUserDto);
   }
 
   @UseGuards(LocalAuthGuard)
