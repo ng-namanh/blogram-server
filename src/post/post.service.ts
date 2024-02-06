@@ -5,12 +5,15 @@ import { Repository } from 'typeorm';
 import { Post } from 'src/database/typeorm/entities/Post';
 import { CreatePostParams } from 'src/utils/types';
 import { User } from 'src/database/typeorm/entities/User';
+import { Reaction } from 'src/database/typeorm/entities/Reaction';
 
 @Injectable()
 export class PostService implements IPostService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Reaction)
+    private readonly reactionRepository: Repository<Reaction>,
   ) {}
 
   async createPost(params: CreatePostParams) {
@@ -37,5 +40,36 @@ export class PostService implements IPostService {
     return await this.postRepository.find({
       relations: ['author'],
     });
+  }
+
+  async likePost(postId: number, userId: number) {
+    const post = await this.postRepository.findOne({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+
+    // check if user has already liked the post
+    const isUserLiked = await this.reactionRepository.findOne({
+      where: { user },
+    });
+
+    if (isUserLiked) {
+      post.likes -= 1;
+      await this.reactionRepository.delete({ user, post });
+    } else {
+      post.likes += 1;
+      await this.reactionRepository.save(
+        this.reactionRepository.create({ user, post }),
+      );
+    }
+
+    return await this.postRepository.save(post);
   }
 }

@@ -48,4 +48,13 @@ export class PostController {
   async getPosts() {
     return await this.postService.getPosts();
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/:postId/like')
+  async likePost(@Req() req: Request & { user: User }) {
+    const { postId } = req.params;
+    const userId = req.user.id;
+
+    return await this.postService.likePost(parseInt(postId), userId);
+  }
 }

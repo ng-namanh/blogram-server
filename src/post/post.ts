@@ -4,4 +4,5 @@ import { CreatePostParams } from 'src/utils/types';
 export interface IPostService {
   createPost(params: CreatePostParams): Promise<Post>;
   getPosts(): Promise<Post[]>;
+  likePost(postId: number, userId: number): Promise<Post>;
 }
