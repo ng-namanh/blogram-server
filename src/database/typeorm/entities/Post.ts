@@ -23,4 +23,7 @@ export class Post {
 
   @CreateDateColumn()
   timestamp: Date;
+
+  @Column({ default: 0 })
+  likes: number;
 }
