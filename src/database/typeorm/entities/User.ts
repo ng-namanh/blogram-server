@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Post } from './Post';
+import { Reaction } from './Reaction';
 
 @Entity({ name: 'users' })
 export class User {
@@ -17,6 +18,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Reaction, (reaction) => reaction.user)
+  reactions: Reaction[];
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];

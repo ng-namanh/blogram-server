@@ -1,9 +1,11 @@
+import { Reaction } from './Reaction';
 import { User } from './User';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,4 +28,7 @@ export class Post {
 
   @Column({ default: 0 })
   likes: number;
+
+  @OneToMany(() => Reaction, (reaction) => reaction.post)
+  reactions: Reaction[];
 }

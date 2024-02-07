@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
 import { Post } from './Post';
 
@@ -7,9 +7,15 @@ export class Reaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @Column()
+  userId: number;
+
+  @Column()
+  postId: number;
+
+  @ManyToOne(() => User, (user) => user.reactions)
   user: User;
 
-  @ManyToOne(() => Post, (post) => post.id)
+  @ManyToOne(() => Post, (post) => post.reactions)
   post: Post;
 }
