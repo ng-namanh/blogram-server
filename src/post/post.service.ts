@@ -51,23 +51,20 @@ export class PostService implements IPostService {
       throw new NotFoundException('Post not found');
     }
 
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
+    const existingReaction = await this.reactionRepository.findOne({
+      where: { postId, userId },
     });
 
-    // check if user has already liked the post
-    const isUserLiked = await this.reactionRepository.findOne({
-      where: { user },
-    });
-
-    if (isUserLiked) {
+    if (existingReaction) {
+      await this.reactionRepository.remove(existingReaction);
       post.likes -= 1;
-      await this.reactionRepository.delete({ user, post });
     } else {
+      const reaction = this.reactionRepository.create({
+        userId,
+        postId,
+      });
+      await this.reactionRepository.save(reaction);
       post.likes += 1;
-      await this.reactionRepository.save(
-        this.reactionRepository.create({ user, post }),
-      );
     }
 
     return await this.postRepository.save(post);
