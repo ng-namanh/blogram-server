@@ -42,6 +42,19 @@ export class PostService implements IPostService {
     });
   }
 
+  async getPostById(postId: number) {
+    const post = await this.postRepository.findOne({
+      where: { id: postId },
+      relations: ['author'],
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return post;
+  }
+
   async likePost(postId: number, userId: number) {
     const post = await this.postRepository.findOne({
       where: { id: postId },
