@@ -6,6 +6,9 @@ import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PostModule } from './post/post.module';
 import { ReactionModule } from './reaction/reaction.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { UploadService } from './upload/upload.service';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -21,8 +24,10 @@ import { ReactionModule } from './reaction/reaction.module';
     }),
     PostModule,
     ReactionModule,
+    CloudinaryModule,
+    UploadModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [UploadService],
 })
 export class AppModule {}
