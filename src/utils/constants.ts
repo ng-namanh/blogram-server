@@ -9,3 +9,5 @@ export enum Services {
   USER = 'USER_SERVICE',
   POST = 'POST_SERVICE',
 }
+
+export const CLOUDINARY = 'Cloudinary';
