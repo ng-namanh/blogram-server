@@ -1,8 +1,8 @@
 import { Post } from 'src/database/typeorm/entities/Post';
-import { CreatePostParams } from 'src/utils/types';
+import { CreatePostParam } from 'src/utils/types';
 
 export interface IPostService {
-  createPost(params: CreatePostParams): Promise<Post>;
+  createPost(params: CreatePostParam): Promise<Post>;
   getPosts(): Promise<Post[]>;
   likePost(postId: number, userId: number): Promise<Post>;
   getPostById(postId: number): Promise<Post>;

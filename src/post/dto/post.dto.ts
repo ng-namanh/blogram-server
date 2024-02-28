@@ -6,4 +6,6 @@ export class CreatePostDto {
 
   @IsNotEmpty()
   content: string;
+
+  coverImageUrl: string;
 }

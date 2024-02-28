@@ -11,11 +11,11 @@ export type PostDetails = {
   content: string;
 };
 
-export type CreatePostParams = {
+export type CreatePostParam = {
   title: string;
   content: string;
   authorId: number;
-  coverImageUrl: Express.Multer.File;
+  coverImageUrl: string;
 };
 
 export type FindUserParams = Partial<{
