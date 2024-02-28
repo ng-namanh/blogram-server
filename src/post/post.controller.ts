@@ -5,7 +5,9 @@ import {
   Inject,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Services, Routes } from 'src/utils/constants';
 import { IPostService } from './post';
@@ -14,21 +16,25 @@ import { ReturnMessage } from 'src/utils/types';
 import { JwtAuthGuard } from 'src/auth/utils/guard.auth';
 import { Request } from 'express';
 import { User } from 'src/database/typeorm/entities/User';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller(Routes.POST)
 export class PostController {
   constructor(@Inject(Services.POST) private postService: IPostService) {}
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('image'))
   @Post('/new')
   createPost(
     @Body() postDto: CreatePostDto,
     @Req() req: Request & { user: User },
+    @UploadedFile() file: Express.Multer.File,
   ) {
     const params = {
       title: postDto.title,
       content: postDto.content,
       authorId: req.user.id,
+      coverImageUrl: file,
     };
 
     this.postService.createPost(params);
