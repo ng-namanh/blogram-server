@@ -32,5 +32,6 @@ export class Post {
   @OneToMany(() => Reaction, (reaction) => reaction.post)
   reactions: Reaction[];
 
-  coverImageUrl: Express.Multer.File;
+  @Column()
+  coverImageUrl: string | null;
 }
