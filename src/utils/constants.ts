@@ -8,6 +8,7 @@ export enum Services {
   AUTH = 'AUTH_SERVICE',
   USER = 'USER_SERVICE',
   POST = 'POST_SERVICE',
+  UPLOAD = 'UPLOAD_SERVICE',
 }
 
 export const CLOUDINARY = 'Cloudinary';
