@@ -5,7 +5,6 @@ import {
   Inject,
   Post,
   Req,
-  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -28,13 +27,12 @@ export class PostController {
   createPost(
     @Body() postDto: CreatePostDto,
     @Req() req: Request & { user: User },
-    @UploadedFile() file: Express.Multer.File,
   ) {
     const params = {
       title: postDto.title,
       content: postDto.content,
       authorId: req.user.id,
-      coverImageUrl: file,
+      coverImageUrl: postDto.coverImageUrl,
     };
 
     this.postService.createPost(params);

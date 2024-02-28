@@ -3,11 +3,11 @@ import { IPostService } from './post';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from 'src/database/typeorm/entities/Post';
-import { CreatePostParams } from 'src/utils/types';
 import { User } from 'src/database/typeorm/entities/User';
 import { Reaction } from 'src/database/typeorm/entities/Reaction';
 import { Services } from 'src/utils/constants';
 import { UploadService } from 'src/upload/upload.service';
+import { CreatePostParam } from 'src/utils/types';
 
 @Injectable()
 export class PostService implements IPostService {
@@ -19,9 +19,9 @@ export class PostService implements IPostService {
     private readonly reactionRepository: Repository<Reaction>,
   ) {}
 
-  async createPost(params: CreatePostParams) {
+  async createPost(params: CreatePostParam) {
     const { title, content, authorId, coverImageUrl } = params;
-    console.log(title, content, authorId, coverImageUrl);
+    console.log(coverImageUrl);
 
     const author = await this.userRepository.findOne({
       where: { id: authorId },
@@ -30,15 +30,20 @@ export class PostService implements IPostService {
       throw new NotFoundException('Author not found');
     }
 
-    const newPost = this.postRepository.create({
+    // const newPost = this.postRepository.create({
+    //   title,
+    //   content,
+    //   author,
+    //   coverImageUrl,
+    // });
+    // console.log(newPost);
+
+    return await this.postRepository.save({
       title,
       content,
       author,
       coverImageUrl,
     });
-
-    this.uploadService.uploadImageToCloudinary(coverImageUrl);
-    return await this.postRepository.save(newPost);
   }
 
   async getPosts() {
