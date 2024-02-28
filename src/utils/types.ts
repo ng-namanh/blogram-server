@@ -15,6 +15,7 @@ export type CreatePostParams = {
   title: string;
   content: string;
   authorId: number;
+  coverImageUrl: Express.Multer.File;
 };
 
 export type FindUserParams = Partial<{
